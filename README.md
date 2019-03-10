@@ -6,5 +6,5 @@ Note:
   * no proper Interface yet
   * Minor Bugs involving the "Weli"-Card
   * in Progress
-  * am Newbie
+  * PietSmiet
   * Comments in German
