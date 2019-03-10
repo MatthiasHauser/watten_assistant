@@ -175,32 +175,86 @@ def ergebnis_ausgeben():
 	else:
 		print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 		print("Folgende Karten könnten angesagt sein: \n")
+		count = 1
 		for pot in range (len(potentiell_angesagte)):
 			y = 0
 			x = potentiell_angesagte[pot][y]
 			z = potentiell_angesagte[pot][y+1]
-			print(switch_farbe(x)+" "+switch_schlag(z)+"\n")
+			print("Möglichkeit "+ str(count)+":"+switch_farbe(x)+" "+switch_schlag(z))
+			print("\tin diesem Fall sind folgende Trümpfe noch im Spiel: ")
+			rest_trumpf((x,z))
+			count += 1
 			#print("\n")
 		print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
+def eingabe(string):
+	if string == "Schell":
+		return 0
+	elif string == "Herz":
+		return 1
+	elif string == "Eichel":
+		return 2
+	elif string == "Laab":
+		return 3
+	elif string == "Sieben":
+		return 0
+	elif string == "Acht":
+		return 1
+	elif string == "Neun":
+		return 2
+	elif string == "Zehn":
+		return 3
+	elif string == "Unter":
+		return 4
+	elif string == "Ober":
+		return 5
+	elif string == "König":
+		return 6
+	elif string == "Ass":
+		return 7
+	elif string == "Weli":
+		return 8
+	else:
+		print("Falsche Eingabe:( Ripperoni")	
 def add_stich():
 	tp = [[0,0] for i in range(5)]
-	print("Schell 0, Herz 1, Eichel 2, Laab 3")
+	print("Schell, Herz, Eichel, Laab")
+	print("Sieben, Acht, Neun, ..., Ass")
 	print("Erste ausgespielte Karte:")
-	tp[0][0] = int(input("Farbe:\t"))
-	tp[0][1] = int(input("Schlag:\t"))
+	tp[0][0] = eingabe(input("Farbe:\t"))
+	tp[0][1] = eingabe(input("Schlag:\t"))
 	print("Zweite ausgespielte Karte:")
-	tp[1][0] = int(input("Farbe:\t"))
-	tp[1][1] = int(input("Schlag:\t"))
+	tp[1][0] = eingabe(input("Farbe:\t"))
+	tp[1][1] = eingabe(input("Schlag:\t"))
 	print("Dritte ausgespielte Karte:")
-	tp[2][0] = int(input("Farbe:\t"))
-	tp[2][1] = int(input("Schlag:\t"))
+	tp[2][0] = eingabe(input("Farbe:\t"))
+	tp[2][1] = eingabe(input("Schlag:\t"))
 	print("Vierte ausgespielte Karte:")
-	tp[3][0] = int(input("Farbe:\t"))
-	tp[3][1] = int(input("Schlag:\t"))
+	tp[3][0] = eingabe(input("Farbe:\t"))
+	tp[3][1] = eingabe(input("Schlag:\t"))
 	num = int(input("Welche dieser Karten hat gestochen? (1-4)"))
 	raten(tp[0],tp[1],tp[2],tp[3],tp[num-1])
+	karten[tp[0][0]][tp[0][1]] = 10 #gespielte Karten werden auf 10 gesetzt.
+	karten[tp[1][0]][tp[1][1]] = 10
+	karten[tp[2][0]][tp[2][1]] = 10
+	karten[tp[3][0]][tp[3][1]] = 10
+	
+def is_trumpf(karte, angesagte):
+	if karte[0] == angesagte[0]:
+		return 1
+	elif karte[1] == angesagte[1]:
+		return 1
+	else:
+		return 0
+		
+def rest_trumpf(angesagte):
+	for farbe in range(4):
+		for schlag in range(8):
+			if karten[farbe][schlag] != 10:
+				if is_trumpf((farbe,schlag), angesagte):
+					print("\t\t"+switch_farbe(farbe)+" "+switch_schlag(schlag))
+
 def main():
+	
 	while(1):
 		print("[1] Stich hinzufügen, [2] Reset, [3] Programm beenden")
 		x = int(input("Was möchten Sie tun? "))
